@@ -4,7 +4,7 @@
 '''
 Author: leoking
 Date: 2022-07-13 13:50:35
-LastEditTime: 2022-08-07 19:00:57
+LastEditTime: 2022-08-13 15:52:52
 LastEditors: your name
 Description: 
 '''
@@ -43,11 +43,11 @@ def test_todo():
 
 
 def test_modifier():
-    uris = [dict(value='http://www.baidu.com', name='bd')]
+    uris = [dict(value='http://www.google.com', name='google')]
 
     todo = Todo(
         uris=uris,
-        title='test',
+        title='test1',
         status=TodoStatus.TODO,
         # started_at=datetime.now(),
         started_at="2020-07-13 13:50:35",
@@ -55,6 +55,6 @@ def test_modifier():
     session = Session()
     session.add(todo)
 
-    row = session.query(Todo).filter(Todo.title == 'test').one()
+    row = session.query(Todo).filter(Todo.title == 'test1').one()
     print(row, row.status)
-    assert row.uris[0].name == 'bd'
+    assert row.uris[0].name == 'google'

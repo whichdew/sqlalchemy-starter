@@ -4,7 +4,7 @@
 '''
 Author: leoking
 Date: 2022-07-13 13:31:07
-LastEditTime: 2022-08-07 19:02:23
+LastEditTime: 2022-08-13 15:51:20
 LastEditors: your name
 Description: 
 '''
@@ -145,7 +145,7 @@ def str_to_datetime(target, value, oldvalue, initiator):
     return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
 
 
-def format_uris(target, value, oldvalue, initiator):
+def format_uri(target, value, initiator):
     '''
     description:
         try to instantiate Uri objects from dict
@@ -156,33 +156,17 @@ def format_uris(target, value, oldvalue, initiator):
     return {*}
     '''
     if not value:
-        return []
-    return list(map(lambda item: item if isinstance(item, Uri) else Uri(**item), value))
-
-
-def format_todos(target, value, oldvalue, initiator):
-    '''
-    description:
-        try to instantiate Todo objects from dict
-    param {*} target
-    param {*} value
-    param {*} oldvalue
-    param {*} initiator
-    return {*}
-    '''
-    if not value:
-        return []
-    return list(
-        map(lambda item: item if isinstance(item, Todo) else Todo(**item), value)
-    )
+        return None
+    print(value)
+    return value if isinstance(value, Uri) else Uri(**value)
 
 
 listen(Todo.started_at, 'set', str_to_datetime, retval=True)
 listen(Todo.ended_at, 'set', str_to_datetime, retval=True)
 listen(Todo.finished_at, 'set', str_to_datetime, retval=True)
 # TODO:为什么不生效？
-listen(Todo.uris, "set", format_uris, retval=True)
-listen(Uri.todos, "set", format_todos, retval=True)
+listen(Todo.uris, "append", format_uri, retval=True)
+# listen(Uri.todos, "set", format_todos, retval=True)
 
 # listen(Todo.owner, 'set', format_owner, retval=True)
 
